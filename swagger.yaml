@@ -17,7 +17,7 @@ paths:
     post:
       tags:
       - "Authentication"
-      summary: "Authenticate a user"
+      summary: "Authenticate a user (accessible by all users)"
       operationId: "login"
       security: []
       requestBody:
@@ -58,7 +58,7 @@ paths:
     get:
       tags:
       - "Authentication"
-      summary: "End a user session"
+      summary: "End a user session (accessible by all users)"
       operationId: "logout"
       responses:
         "200":
@@ -78,7 +78,7 @@ paths:
     post:
       tags:
       - "Doctor"
-      summary: "Create a new staff member"
+      summary: "Create a new staff member (accessible only by the admin)"
       operationId: "createStaff"
       requestBody:
         content:
@@ -130,7 +130,7 @@ paths:
     get:
       tags:
       - "Doctor"
-      summary: "Returns a particular staff member."
+      summary: "Returns a particular staff member. (accessible by all users)"
       operationId: "getSingleStaff"
       parameters:
       - name: "staffId"
@@ -160,7 +160,7 @@ paths:
     put:
       tags:
       - "Doctor"
-      summary: "Update a staff member's details"
+      summary: "Update a staff member's details (accessible by the staff member (doctor/receptionist) who the id number belongs to) as well as the admin"
       operationId: "updateStaff"
       parameters:
       - name: "staffId"
@@ -214,7 +214,7 @@ paths:
     delete:
       tags:
       - "Doctor"
-      summary: "Delete this staff member."
+      summary: "Delete this staff member. (accessible only by the admin)"
       operationId: "deleteStaff"
       parameters:
       - name: "staffId"
@@ -243,7 +243,7 @@ paths:
     get:
       tags:
       - "Doctor"
-      summary: "Returns a list of all doctors."
+      summary: "Returns a list of all doctors. (accessible by all users)"
       operationId: "getDoctor"
       parameters:
       - name: "from"
@@ -285,7 +285,7 @@ paths:
     get:
       tags:
       - "Doctor"
-      summary: "Fetch all surgeries for a particular doctor"
+      summary: "Fetch all surgeries for a particular doctor (accessible by all users)"
       operationId: "getDoctorSurgeries"
       parameters:
       - name: "doctorId"
@@ -316,7 +316,7 @@ paths:
     get:
       tags:
       - "Patient"
-      summary: "Get a list of patients"
+      summary: "Get a list of patients (accessible by all users)"
       operationId: "getPatients"
       responses:
         "200":
@@ -339,7 +339,7 @@ paths:
     post:
       tags:
       - "Patient"
-      summary: "Create a new patient"
+      summary: "Create a new patient (accessible by the receptionist and the admin)"
       operationId: "createPatient"
       requestBody:
         content:
@@ -381,7 +381,7 @@ paths:
     get:
       tags:
       - "Patient"
-      summary: "Returns a particular patient."
+      summary: "Returns a particular patient. (accessible by all users)"
       operationId: "getSinglePatient"
       parameters:
       - name: "patientId"
@@ -411,7 +411,7 @@ paths:
     put:
       tags:
       - "Patient"
-      summary: "Update a patient's details"
+      summary: "Update a patient's details (accessible by the receptionist and the admin)"
       operationId: "updatePatient"
       parameters:
       - name: "patientId"
@@ -462,7 +462,7 @@ paths:
     delete:
       tags:
       - "Patient"
-      summary: "Delete this patient"
+      summary: "Delete this patient (accessible by receptionist and the admin)"
       operationId: "deletePatient"
       parameters:
       - name: "patientId"
@@ -491,7 +491,7 @@ paths:
     get:
       tags:
       - "Patient"
-      summary: "Fetch all surgeries for a particular patient"
+      summary: "Fetch all surgeries for a particular patient (accessible by all users)"
       operationId: "getPatientSugeries"
       parameters:
       - name: "patientId"
@@ -524,7 +524,7 @@ paths:
       tags:
       - "Surgery"
       - "Patient"
-      summary: "Create a new surgery"
+      summary: "Create a new surgery (accessible by doctors and admins)"
       operationId: "createSurgery"
       parameters:
       - name: "patientId"
@@ -583,7 +583,7 @@ paths:
     get:
       tags:
       - "Surgery"
-      summary: "Get a list of surgeries"
+      summary: "Get a list of surgeries (accessible by the receptionist and the admin)"
       operationId: "getSurgeries"
       responses:
         "200":
@@ -607,7 +607,7 @@ paths:
     get:
       tags:
       - "Surgery"
-      summary: "Fetch a particular surgery"
+      summary: "Fetch a particular surgery (accessible by all users)"
       operationId: "getSurgery"
       parameters:
       - name: "surgeryId"
@@ -637,7 +637,7 @@ paths:
     put:
       tags:
       - "Surgery"
-      summary: "Update a surgery's details"
+      summary: "Update a surgery's details (accessible by doctors and the admin)"
       operationId: "updateSurgery"
       parameters:
       - name: "surgeryId"
@@ -696,7 +696,7 @@ paths:
     delete:
       tags:
       - "Surgery"
-      summary: "Delete this surgery"
+      summary: "Delete this surgery (accessible by doctors and the admin)"
       operationId: "deleteSurgery"
       parameters:
       - name: "surgeryId"
@@ -725,7 +725,7 @@ paths:
     get:
       tags:
       - "Surgery"
-      summary: "Returns a list of all doctors assigned to a particular surgery."
+      summary: "Returns a list of all doctors assigned to a particular surgery. (accessible by all users)"
       operationId: "getSurgeryDoctors"
       parameters:
       - name: "surgeryId"
@@ -758,7 +758,7 @@ paths:
     get:
       tags:
       - "Room"
-      summary: "Get a list of rooms"
+      summary: "Get a list of rooms (accessible by all users)"
       operationId: "getRooms"
       parameters:
       - name: "from"
@@ -798,7 +798,7 @@ paths:
     post:
       tags:
       - "Room"
-      summary: "Create a new room"
+      summary: "Create a new room (accessible by the admin)"
       operationId: "createRoom"
       requestBody:
         content:
@@ -830,7 +830,7 @@ paths:
     get:
       tags:
       - "Room"
-      summary: "Returns a particular room."
+      summary: "Returns a particular room.  (accessible by all users)"
       operationId: "getSingleRoom"
       parameters:
       - name: "roomId"
@@ -860,7 +860,7 @@ paths:
     put:
       tags:
       - "Room"
-      summary: "Update a room's details"
+      summary: "Update a room's details (accessible by admin)"
       operationId: "updateRoom"
       parameters:
       - name: "roomId"
@@ -901,7 +901,7 @@ paths:
     delete:
       tags:
       - "Room"
-      summary: "Delete this room"
+      summary: "Delete this room (accessible by admin)"
       operationId: "deleteRoom"
       parameters:
       - name: "roomId"
@@ -930,7 +930,7 @@ paths:
     get:
       tags:
       - "Room"
-      summary: "Get a list of surgeries assigned to a particular room"
+      summary: "Get a list of surgeries assigned to a particular room (accessible by all users)"
       operationId: "getRoomSurgeries"
       parameters:
       - name: "roomId"
