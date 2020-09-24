@@ -6,18 +6,21 @@ the tasks outlined below:
 
 ### User Stories:
 * As a receptionist
-    * I should be able to add patients to the system
-    * I should be able to create an appointment for a patient with an available doctor
-    * I should be able to see  a list of available doctors for a given time period
-    * I should be able to see a list of all patients
-    * I should be able to select a patient and see their appointments or surgeries
+    * I should be able to use the system to add, view, update and delete patients
+    * I should be able to select a patient and see their surgeries
+    * I should be able to view a list of all the doctors and optionally view their surgeries 
+    * I should be able to see a list of all the rooms and optionally view ther surgeries assigned to it
+    
 * As a doctor
-    * I should be able see a list of all my surgeries
+    * I should be able see a list of all my surgeries (alone)
+    * I should be able see a list of all patients
     * I should be able to create a surgery for a patient
-    * I should be able to see a list of available rooms for surgery for a given time period
-    * I should be able see all available doctors for a surgery for a particular time period
+    * I should be able to see a list of available rooms for surgery for a given time period (to be used for a surgery)
+    * I should be able to see all available doctors for a surgery for a particular time period (to be assigned to a surgery)
 * As an admin 
     * I should be able to check the schedule of any doctor or room as well as perform all the functions of a doctor or receptionist in the system
+    * I should be able to create update or delete staff
+    * I should be able to create update or delete rooms
 
 Your implementation may be in [Python](https://www.python.org), [Java](https://www.java.com/en/) or JavaScript (using [nodejs](https://nodejs.org/en/)), and you may use a web framework of your choosing.
 
