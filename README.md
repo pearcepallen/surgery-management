@@ -1,6 +1,6 @@
 # Surgery Management API
 
-A reference implementation of the REST API described by the [swagger.yaml](swagger.yaml) file provided is not yet available.
+Design a database schema and use it to create a database that will help you to implement the REST API described by the [swagger.yaml](swagger.yaml).
 In a nutshell, this API will support the creation of a surgery management web app where receptionists, doctors and admins may do
 the tasks outlined below:
 
