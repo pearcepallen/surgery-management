@@ -19,6 +19,7 @@ paths:
       - "Authentication"
       summary: "Authenticate a user"
       operationId: "login"
+      security: []
       requestBody:
         content:
           application/json:
