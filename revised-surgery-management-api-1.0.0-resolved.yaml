@@ -1,0 +1,1047 @@
+---
+openapi: "3.0.0"
+info:
+  title: "Surgery Management System API"
+  description: "[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)\n\n\
+    This API describes crud operations on a hospital management system\n"
+  version: "1.0.0"
+servers:
+- url: "/"
+security:
+- bearerAuth: []
+tags:
+- name: "Authentication"
+- name: "Doctor"
+- name: "Patient"
+- name: "Surgery"
+- name: "Room"
+paths:
+  /login:
+    post:
+      tags:
+      - "Authentication"
+      summary: "Authenticate a user"
+      operationId: "login"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                  format: "email"
+                  example: "someone@example.com"
+                password:
+                  type: "string"
+                  format: "password"
+                  example: "3M7jLpvv"
+        required: true
+      responses:
+        "200":
+          description: "Successfully logged in"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully logged in"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/staff"
+                  jwt:
+                    type: "string"
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  /logout:
+    get:
+      tags:
+      - "Authentication"
+      summary: "End a user session"
+      operationId: "logout"
+      responses:
+        "200":
+          description: "Successfully logged out"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully logged out"
+                  code:
+                    type: "integer"
+                    example: 0
+  /staff:
+    post:
+      tags:
+      - "Doctor"
+      summary: "Create a new staff member"
+      operationId: "createStaff"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                staffType:
+                  type: "string"
+                  example: "Doctor"
+                fname:
+                  type: "string"
+                  example: "John"
+                lname:
+                  type: "string"
+                  example: "Doe"
+                email:
+                  type: "string"
+                  format: "email"
+                  example: "john.doe@example.com"
+                phone:
+                  type: "string"
+                  example: "8761234567"
+                password:
+                  type: "string"
+                  format: "password"
+                  example: "3M7jLpvv"
+        required: true
+      responses:
+        "200":
+          description: "Details of a new staff member"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully created staff member"
+                  code:
+                    type: "integer"
+                    example: 0
+                  jwt:
+                    type: "string"
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  user:
+                    $ref: "#/components/schemas/staff"
+  /staff/{staffId}:
+    get:
+      tags:
+      - "Doctor"
+      summary: "Returns a particular staff member."
+      operationId: "getSingleStaff"
+      parameters:
+      - name: "staffId"
+        in: "path"
+        description: "staff id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A staff object"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned staff member"
+                  code:
+                    type: "integer"
+                    example: 0
+                  user:
+                    $ref: "#/components/schemas/staff"
+    put:
+      tags:
+      - "Doctor"
+      summary: "Update a staff member's details"
+      operationId: "updateStaff"
+      parameters:
+      - name: "staffId"
+        in: "path"
+        description: "staff id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      requestBody:
+        description: "A staff object"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                staffType:
+                  type: "string"
+                  example: "Doctor"
+                fname:
+                  type: "string"
+                  example: "John"
+                lname:
+                  type: "string"
+                  example: "Doe"
+                email:
+                  type: "string"
+                  format: "email"
+                  example: "john.doe@example.com"
+                phone:
+                  type: "string"
+                  example: "8761234567"
+        required: true
+      responses:
+        "200":
+          description: "Details of the updated staff member"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully updated staff member"
+                  code:
+                    type: "integer"
+                    example: 0
+                  user:
+                    $ref: "#/components/schemas/staff"
+    delete:
+      tags:
+      - "Doctor"
+      summary: "Delete this staff member."
+      operationId: "deleteStaff"
+      parameters:
+      - name: "staffId"
+        in: "path"
+        description: "staff id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Staff deleted"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Staff deleted"
+                  code:
+                    type: "integer"
+                    example: 0
+  /doctors:
+    get:
+      tags:
+      - "Doctor"
+      summary: "Returns a list of all doctors."
+      operationId: "getDoctor"
+      parameters:
+      - name: "from"
+        in: "query"
+        description: "the start of the time period for which the doctors should be\
+          \ available"
+        required: false
+        style: "form"
+        explode: true
+        schema:
+          type: "string"
+      - name: "to"
+        in: "query"
+        description: "the end of the time period for which the doctors should be available"
+        required: false
+        style: "form"
+        explode: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "A JSON array of doctors"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned doctors"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/staff"
+  /doctors/{doctorId}/surgeries:
+    get:
+      tags:
+      - "Doctor"
+      summary: "Fetch all surgeries for a particular doctor"
+      operationId: "getDoctorSurgeries"
+      parameters:
+      - name: "doctorId"
+        in: "path"
+        description: "doctor id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A JSON array of surgery objects"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned surgeries"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/surgery"
+  /patients:
+    get:
+      tags:
+      - "Patient"
+      summary: "Get a list of patients"
+      operationId: "getPatients"
+      responses:
+        "200":
+          description: "A JSON array of patients"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned patients"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/patient"
+    post:
+      tags:
+      - "Patient"
+      summary: "Create a new patient"
+      operationId: "createPatient"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                fname:
+                  type: "string"
+                  example: "James"
+                lname:
+                  type: "string"
+                  example: "Cordon"
+                dob:
+                  type: "string"
+                  format: "date-time"
+                  example: "2017-07-21T17:32:28Z"
+                contactNumber:
+                  type: "string"
+                  example: "8769876543"
+        required: true
+      responses:
+        "200":
+          description: "Details of a new patient"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully created patient"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/patient"
+  /patients/{patientId}:
+    get:
+      tags:
+      - "Patient"
+      summary: "Returns a particular patient."
+      operationId: "getSinglePatient"
+      parameters:
+      - name: "patientId"
+        in: "path"
+        description: "patient id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A patient object"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned patient"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/patient"
+    put:
+      tags:
+      - "Patient"
+      summary: "Update a patient's details"
+      operationId: "updatePatient"
+      parameters:
+      - name: "patientId"
+        in: "path"
+        description: "patient id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      requestBody:
+        description: "A patient object"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                fname:
+                  type: "string"
+                  example: "James"
+                lname:
+                  type: "string"
+                  example: "Cordon"
+                dob:
+                  type: "string"
+                  format: "date-time"
+                  example: "2017-07-21T17:32:28Z"
+                contactNumber:
+                  type: "string"
+                  example: "8769876543"
+        required: true
+      responses:
+        "200":
+          description: "Details of the updated patient"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully updated patient"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/patient"
+    delete:
+      tags:
+      - "Patient"
+      summary: "Delete this patient"
+      operationId: "deletePatient"
+      parameters:
+      - name: "patientId"
+        in: "path"
+        description: "patient id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Patient deleted"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Patient deleted"
+                  code:
+                    type: "integer"
+                    example: 0
+  /patients/{patientId}/surgeries:
+    get:
+      tags:
+      - "Patient"
+      summary: "Fetch all surgeries for a particular patient"
+      operationId: "getPatientSugeries"
+      parameters:
+      - name: "patientId"
+        in: "path"
+        description: "patient id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A JSON array of surgery objects"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned patient surgeries"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/surgery"
+    post:
+      tags:
+      - "Surgery"
+      - "Patient"
+      summary: "Create a new surgery"
+      operationId: "createSurgery"
+      parameters:
+      - name: "patientId"
+        in: "path"
+        description: "patient id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                requestedBy:
+                  type: "string"
+                  example: "Brent Jamison"
+                patient:
+                  type: "string"
+                  example: "John Doe"
+                room:
+                  type: "string"
+                  example: "Operating Room 1"
+                startDate:
+                  type: "string"
+                  format: "date-time"
+                  example: "2017-07-21T17:32:28Z"
+                endDate:
+                  type: "string"
+                  format: "date-time"
+                  example: "2017-07-21T17:32:28Z"
+                doctorIds:
+                  type: "array"
+                  items:
+                    type: "integer"
+        required: true
+      responses:
+        "200":
+          description: "Details of a new surgery"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully created surgery"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/surgery"
+  /surgeries:
+    get:
+      tags:
+      - "Surgery"
+      summary: "Get a list of surgeries"
+      operationId: "getSurgeries"
+      responses:
+        "200":
+          description: "A JSON array of surgeries"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned surgeries"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/surgery"
+  /surgeries/{surgeryId}:
+    get:
+      tags:
+      - "Surgery"
+      summary: "Fetch a particular surgery"
+      operationId: "getSurgery"
+      parameters:
+      - name: "surgeryId"
+        in: "path"
+        description: "surgery id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Fetch a partitcular surgery"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned surgery"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/surgery"
+    put:
+      tags:
+      - "Surgery"
+      summary: "Update a surgery's details"
+      operationId: "updateSurgery"
+      parameters:
+      - name: "surgeryId"
+        in: "path"
+        description: "surgery id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      requestBody:
+        description: "A surgery object"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                requestedBy:
+                  type: "string"
+                  example: "Brent Jamison"
+                patient:
+                  type: "string"
+                  example: "John Doe"
+                room:
+                  type: "string"
+                  example: "Operating Room 1"
+                startDate:
+                  type: "string"
+                  format: "date-time"
+                  example: "2017-07-21T17:32:28Z"
+                endDate:
+                  type: "string"
+                  format: "date-time"
+                  example: "2017-07-21T17:32:28Z"
+                doctorIds:
+                  type: "array"
+                  items:
+                    type: "integer"
+        required: true
+      responses:
+        "200":
+          description: "Details of the updated surgery"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully updated surgery"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/surgery"
+    delete:
+      tags:
+      - "Surgery"
+      summary: "Delete this surgery"
+      operationId: "deleteSurgery"
+      parameters:
+      - name: "surgeryId"
+        in: "path"
+        description: "surgery id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Surgery deleted"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Surgery deleted"
+                  code:
+                    type: "integer"
+                    example: 0
+  /surgeries/{surgeryId}/doctors:
+    get:
+      tags:
+      - "Surgery"
+      summary: "Returns a list of all doctors assigned to a particular surgery."
+      operationId: "getSurgeryDoctors"
+      parameters:
+      - name: "surgeryId"
+        in: "path"
+        description: "surgery id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A JSON array of doctors"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned doctors"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/staff"
+  /rooms:
+    get:
+      tags:
+      - "Room"
+      summary: "Get a list of rooms"
+      operationId: "getRooms"
+      parameters:
+      - name: "from"
+        in: "query"
+        description: "the start of the time period for which the rooms should be available"
+        required: false
+        style: "form"
+        explode: true
+        schema:
+          type: "string"
+      - name: "to"
+        in: "query"
+        description: "the end of the time period for which the rooms should be available"
+        required: false
+        style: "form"
+        explode: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "A JSON array of rooms"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned rooms"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/room"
+    post:
+      tags:
+      - "Room"
+      summary: "Create a new room"
+      operationId: "createRoom"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                roomName:
+                  type: "string"
+                  example: "Operating Room 1"
+        required: true
+      responses:
+        "200":
+          description: "Details of a new room"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully created room"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/room"
+  /rooms/{roomId}:
+    get:
+      tags:
+      - "Room"
+      summary: "Returns a particular room."
+      operationId: "getSingleRoom"
+      parameters:
+      - name: "roomId"
+        in: "path"
+        description: "room id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A room object"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned room"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/room"
+    put:
+      tags:
+      - "Room"
+      summary: "Update a room's details"
+      operationId: "updateRoom"
+      parameters:
+      - name: "roomId"
+        in: "path"
+        description: "room id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      requestBody:
+        description: "A room object"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                roomName:
+                  type: "string"
+                  example: "Operating Room 1"
+        required: true
+      responses:
+        "200":
+          description: "Details of the updated room"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully updated room"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    $ref: "#/components/schemas/room"
+    delete:
+      tags:
+      - "Room"
+      summary: "Delete this room"
+      operationId: "deleteRoom"
+      parameters:
+      - name: "roomId"
+        in: "path"
+        description: "room id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "Room deleted"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Room deleted"
+                  code:
+                    type: "integer"
+                    example: 0
+  /rooms/{roomId}/surgeries:
+    get:
+      tags:
+      - "Room"
+      summary: "Get a list of surgeries assigned to a particular room"
+      operationId: "getRoomSurgeries"
+      parameters:
+      - name: "roomId"
+        in: "path"
+        description: "room id"
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          type: "integer"
+      responses:
+        "200":
+          description: "A JSON array of surgeries"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Successfully returned surgeries"
+                  code:
+                    type: "integer"
+                    example: 0
+                  data:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/surgery"
+components:
+  schemas:
+    staff:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          example: 1
+        staffType:
+          type: "string"
+          example: "Doctor"
+        fname:
+          type: "string"
+          example: "John"
+        lname:
+          type: "string"
+          example: "Doe"
+        phone:
+          type: "string"
+          example: "8761234567"
+        email:
+          type: "string"
+          format: "email"
+          example: "john.doe@example.com"
+    room:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          example: 1
+        roomName:
+          type: "string"
+          example: "Operating Room 1"
+    patient:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          example: 1
+        fname:
+          type: "string"
+          example: "James"
+        lname:
+          type: "string"
+          example: "Cordon"
+        dob:
+          type: "string"
+          format: "date-time"
+          example: "2017-07-21T17:32:28Z"
+        contactNumber:
+          type: "string"
+          example: "8769876543"
+    surgery:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          example: 1
+        requestedBy:
+          type: "string"
+          example: "Brent Jamison"
+        room:
+          type: "string"
+          example: "Operating Room 1"
+        patient:
+          type: "string"
+          example: "John Doe"
+        startDate:
+          type: "string"
+          format: "date-time"
+          example: "2017-07-21T17:32:28Z"
+        endDate:
+          type: "string"
+          format: "date-time"
+          example: "2017-07-21T19:32:28Z"
+        doctorIds:
+          type: "array"
+          items:
+            type: "integer"
+  securitySchemes:
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
