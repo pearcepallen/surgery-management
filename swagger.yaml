@@ -1,12 +1,9 @@
----
 openapi: "3.0.0"
 info:
   title: "Surgery Management System API"
   description: "[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)\n\n\
     This API describes crud operations on a hospital management system\n"
   version: "1.0.0"
-servers:
-- url: "/"
 security:
 - bearerAuth: []
 tags:
@@ -22,6 +19,7 @@ paths:
       - "Authentication"
       summary: "Authenticate a user"
       operationId: "login"
+      security: []
       requestBody:
         content:
           application/json:
