@@ -32,6 +32,7 @@ In addition to satisfying the API specification, your implementation should adhe
 * You should include instructions on how to set up your implementation for testing in a file called INSTRUCTIONS.md, including provisions for one admin user with the following credentials:
     * email: admin@speurgroup.com
     * password: admin
+* Pay special attention to the different ways you can filter the surgeries being returned from the `GET /surgeries` endpoint using qurey parameters. You don't have to worry bout being able to filter by more than one category at a time. However, if you can, it will be treated as a bonus.
 
 You may need to make some other assumptions (e.g. how to respond to error conditions) in order to complete the implementation. As long as they do not conflict with one of the requirements that have been clearly stated, feel free to make and state your assumptions in your submission.
 All responses from the api should be of the below format where the code will be 0 for all successful responses and 1 otherwise.
@@ -64,7 +65,7 @@ In order to implement this REST API effectively, you will need to be familiar wi
 ## Bonus points
 
 The following are for bonus points only and are not required:
-
+* Be able to filter the `GET /surgeries` by multiple query params at once
 * Include a working `Dockerfile` and/or `docker-compose.yaml` for your project (see [Docker](https://www.docker.com/))
 * Include a working `.gitlab-ci.yaml` file for your project (see [GitLab CI/CD](https://docs.gitlab.com/ce/ci/))
 * Include a `Bonus.md` file explaining how you would implement a "forgot password" feature, allowing a user to change
