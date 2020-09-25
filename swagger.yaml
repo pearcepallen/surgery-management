@@ -542,7 +542,7 @@ paths:
         schema:
           type: "string"
       summary: "Get a list of surgeries"
-      description: "(accessible by the receptionist and the admin)"
+      description: "(accessible by all users)"
       operationId: "getSurgeries"
       responses:
         "200":
