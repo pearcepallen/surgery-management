@@ -255,19 +255,14 @@ paths:
       parameters:
       - name: "from"
         in: "query"
-        description: "the start of the time period for which the doctors should be\
-          \ available"
+        description: "the start of the time period for which the doctors should be available"
         required: false
-        style: "form"
-        explode: true
         schema:
           type: "string"
       - name: "to"
         in: "query"
         description: "the end of the time period for which the doctors should be available"
         required: false
-        style: "form"
-        explode: true
         schema:
           type: "string"
       responses:
@@ -288,38 +283,6 @@ paths:
                     type: "array"
                     items:
                       $ref: "#/components/schemas/staff"
-  /doctors/{doctorId}/surgeries:
-    get:
-      tags:
-      - "Doctor"
-      summary: "Fetch all surgeries for a particular doctor"
-      description: "(accessible by the receptionist, the admin, and the doctor who the id belongs to)"
-      operationId: "getDoctorSurgeries"
-      parameters:
-      - name: "doctorId"
-        in: "path"
-        description: "doctor id"
-        required: true
-        style: "simple"
-        explode: false
-        schema:
-          type: "integer"
-      responses:
-        "200":
-          description: "A JSON array of surgery objects"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  message:
-                    type: "string"
-                    example: "Successfully returned surgeries"
-                  code:
-                    type: "integer"
-                    example: 0
-                  data:
-                    $ref: "#/components/schemas/surgery"
   /patients:
     get:
       tags:
@@ -500,56 +463,13 @@ paths:
                   code:
                     type: "integer"
                     example: 0
-  /patients/{patientId}/surgeries:
-    get:
-      tags:
-      - "Patient"
-      summary: "Fetch all surgeries for a particular patient"
-      description: "(accessible by all users)"
-      operationId: "getPatientSugeries"
-      parameters:
-      - name: "patientId"
-        in: "path"
-        description: "patient id"
-        required: true
-        style: "simple"
-        explode: false
-        schema:
-          type: "integer"
-      responses:
-        "200":
-          description: "A JSON array of surgery objects"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  message:
-                    type: "string"
-                    example: "Successfully returned patient surgeries"
-                  code:
-                    type: "integer"
-                    example: 0
-                  data:
-                    type: "array"
-                    items:
-                      $ref: "#/components/schemas/surgery"
+  /surgeries:
     post:
       tags:
       - "Surgery"
-      - "Patient"
       summary: "Create a new surgery"
       description: "(accessible by doctors and admins)"
       operationId: "createSurgery"
-      parameters:
-      - name: "patientId"
-        in: "path"
-        description: "patient id"
-        required: true
-        style: "simple"
-        explode: false
-        schema:
-          type: "integer"
       requestBody:
         content:
           application/json:
@@ -557,14 +477,15 @@ paths:
               type: "object"
               properties:
                 requestedBy:
-                  type: "string"
-                  example: "Brent Jamison"
-                patient:
-                  type: "string"
-                  example: "John Doe"
-                room:
-                  type: "string"
-                  example: "Operating Room 1"
+                  type: "integer"
+                  description: "The id of the doctor who created the surgery"
+                  example: 1
+                patientId:
+                  type: "integer"
+                  example: 1
+                roomId:
+                  type: "integer"
+                  example: 1
                 startDate:
                   type: "string"
                   format: "date-time"
@@ -575,8 +496,12 @@ paths:
                   example: "2017-07-21T17:32:28Z"
                 doctorIds:
                   type: "array"
+                  description: "The ids of the doctors assigned to the surgery"
                   items:
                     type: "integer"
+                  example:
+                    - 1
+                    - 3
         required: true
       responses:
         "200":
@@ -594,10 +519,28 @@ paths:
                     example: 0
                   data:
                     $ref: "#/components/schemas/surgery"
-  /surgeries:
     get:
       tags:
       - "Surgery"
+      parameters:
+      - name: "doctor"
+        in: "query"
+        description: "the id of the doctor that you want to filter the surgeries by"
+        required: false
+        schema:
+          type: "string"
+      - name: "patient"
+        in: "query"
+        description: "the id of the patient that you want to filter the surgeries by"
+        required: false
+        schema:
+          type: "string"
+      - name: "room"
+        in: "query"
+        description: "the id of the room that you want to filter the surgeries by"
+        required: false
+        schema:
+          type: "string"
       summary: "Get a list of surgeries"
       description: "(accessible by the receptionist and the admin)"
       operationId: "getSurgeries"
@@ -1044,14 +987,11 @@ components:
           type: "integer"
           example: 1
         requestedBy:
-          type: "string"
-          example: "Brent Jamison"
+          $ref: "#/components/schemas/staff"
         room:
-          type: "string"
-          example: "Operating Room 1"
+          $ref: "#/components/schemas/room"
         patient:
-          type: "string"
-          example: "John Doe"
+          $ref: "#/components/schemas/patient"
         startDate:
           type: "string"
           format: "date-time"
@@ -1060,10 +1000,10 @@ components:
           type: "string"
           format: "date-time"
           example: "2017-07-21T19:32:28Z"
-        doctorIds:
+        doctors:
           type: "array"
           items:
-            type: "integer"
+            $ref: "#/components/schemas/staff"
   securitySchemes:
     bearerAuth:
       type: "http"
