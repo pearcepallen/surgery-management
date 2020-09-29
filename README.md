@@ -37,13 +37,6 @@ In addition to satisfying the API specification, your implementation should adhe
 You may need to make some other assumptions (e.g. how to respond to error conditions) in order to complete the implementation. As long as they do not conflict with one of the requirements that have been clearly stated, feel free to make and state your assumptions in your submission.
 All responses from the api should be of the below format where the code will be 0 for all successful responses and 1 otherwise.
 
-```bash
-{
-    code: number,
-    message: string,
-    data: object | array
-}
-```
 ## Instructions
 
 Fork this repository and write code to satisfy the implementation. When you are satisfied that your code works 
