@@ -32,7 +32,7 @@ In addition to satisfying the API specification, your implementation should adhe
 * You should include instructions on how to set up your implementation for testing in a file called INSTRUCTIONS.md, including provisions for one admin user with the following credentials:
     * email: admin@speurgroup.com
     * password: admin
-* Pay special attention to the different ways you can filter the surgeries being returned from the `GET /surgeries` endpoint using qurey parameters. You don't have to worry bout being able to filter by more than one category at a time. However, if you can, it will be treated as a bonus.
+* Pay special attention to the different ways you can filter the surgeries being returned from the `GET /surgeries` endpoint using query parameters. You don't have to worry bout being able to filter by more than one category at a time. However, if you can, it will be treated as a bonus.
 
 You may need to make some other assumptions (e.g. how to respond to error conditions) in order to complete the implementation. As long as they do not conflict with one of the requirements that have been clearly stated, feel free to make and state your assumptions in your submission.
 All responses from the api should be of the below format where the code will be 0 for all successful responses and 1 otherwise.
