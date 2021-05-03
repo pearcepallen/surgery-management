@@ -980,6 +980,10 @@ components:
         contactNumber:
           type: "string"
           example: "8769876543"
+        email:
+          type: "string"
+          format: "email"
+          example: "john.doe@example.com"
     surgery:
       type: "object"
       properties:
