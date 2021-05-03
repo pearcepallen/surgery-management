@@ -63,7 +63,8 @@ The following are for bonus points only and are not required:
 * Include a working `.gitlab-ci.yaml` file for your project (see [GitLab CI/CD](https://docs.gitlab.com/ce/ci/))
 * Include a `Bonus.md` file explaining how you would implement a "forgot password" feature, allowing a user to change
  their password
- * Actually implement the forgot password feature
+* Actually implement the forgot password feature
+* Invalidate your JWTs on logout without using the database
 
 
 ## Final Remarks
