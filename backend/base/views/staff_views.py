@@ -23,3 +23,26 @@ def createStaff(request):
 
     serializer = StaffSerializer(staff, many=False)
     return Response(serializer.data)   
+
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def getStaff(request, pk):
+    staff = Staff.objects.get(id=pk)
+
+    if request.method == 'PUT':
+        data = request.data
+        staff.firstName=data['firstName']
+        staff.lastName=data['lastName']
+        staff.email=data['email']
+        staff.phone=data['phone']
+        staff.staffType=data['staffType']
+        staff.save()
+
+    if request.method == 'DELETE':
+        staff.delete()
+        return Response('Staff deleted')
+
+    serializer = StaffSerializer(staff, many=False)
+    return Response(serializer.data)   
