@@ -1,11 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 # Create your models here.
-class User(AbstractUser):
-    isReceptionist = models.BooleanField(default=False)
-    isDoctor = models.BooleanField(default=False)
-    isAdmin = models.BooleanField(default=False)
+# class User(AbstractUser):
+#     isReceptionist = models.BooleanField(default=False)
+#     isDoctor = models.BooleanField(default=False)
+#     isAdmin = models.BooleanField(default=False)
 
 
 
