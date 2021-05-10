@@ -18,7 +18,7 @@ def createStaff(request):
         lastName=data['lastName'],
         email=data['email'],
         phone=data['phone'],
-        staffType=data['staffType']
+        staffType=data['staffType'].capitalize()
     )
 
     serializer = StaffSerializer(staff, many=False)
@@ -45,4 +45,14 @@ def getStaff(request, pk):
         return Response('Staff deleted')
 
     serializer = StaffSerializer(staff, many=False)
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getDoctors(request):
+    doctors = Staff.objects.filter(staffType='Doctor')
+
+    serializer = StaffSerializer(doctors, many=True)
     return Response(serializer.data)   
