@@ -23,7 +23,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('api/users/',include('base.urls.user_urls')),
     path('api/staff/',include('base.urls.staff_urls')),
-    # path('api/patients/',include('base.urls.patient_urls')),
+    path('api/patients/',include('base.urls.patient_urls')),
     # path('api/surgeries/',include('base.urls.surgery_urls')),
     # path('api/rooms/',include('base.urls.room_urls')),
 ]
