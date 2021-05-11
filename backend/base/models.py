@@ -9,7 +9,6 @@ class Staff(models.Model):
     email = models.CharField(max_length=200, null=True, blank=True)
     phone = models.CharField(max_length=200, null=True, blank=True)
     staffType = models.CharField(max_length=200, null=True, blank=True)
-    #surgery = models.ForeignKey('Surgery', on_delete=models.CASCADE, related_name='doctors', null=True, blank=True ) #doctors
 
     def __str__(self):
         return self.firstName
@@ -35,13 +34,4 @@ class Surgery(models.Model):
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE) #Contemplate making it protected for record purpose
     startDate = models.DateField()
     endDate = models.DateField()
-    # doctors = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='surgery', null=True)
-
-    # def __str__(self):
-    #     return self.room
-
-
-class Doctor(models.Model): #Class for multiple doctors per surgery
-    id = models.AutoField(primary_key=True, editable=False)
-    surgery = models.ForeignKey(Surgery, on_delete=models.CASCADE, related_name='surgery', null=True)
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='doctors', null=True)
+    doctors = models.ManyToManyField(Staff, blank=True)

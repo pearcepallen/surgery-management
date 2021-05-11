@@ -62,7 +62,8 @@ class SurgerySerializer(serializers.ModelSerializer):
     requestedBy = serializers.SerializerMethodField(read_only=True)
     room = serializers.SerializerMethodField(read_only=True)
     patient = serializers.SerializerMethodField(read_only=True)
-    
+    doctors = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Surgery
         fields = '__all__'
@@ -82,7 +83,7 @@ class SurgerySerializer(serializers.ModelSerializer):
         serializer = PatientSerializer(patient, many=False)
         return serializer.data
 
-class DoctorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Doctor
-        fields = '__all__'
+    def get_doctors(self, obj):
+        doctors = obj.doctors
+        serializer = StaffSerializer(doctors, many=True)
+        return serializer.data
