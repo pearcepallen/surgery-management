@@ -59,11 +59,28 @@ class RoomSerializer(serializers.ModelSerializer):
 
 
 class SurgerySerializer(serializers.ModelSerializer):
+    requestedBy = serializers.SerializerMethodField(read_only=True)
+    room = serializers.SerializerMethodField(read_only=True)
+    patient = serializers.SerializerMethodField(read_only=True)
+    
     class Meta:
         model = Surgery
         fields = '__all__'
 
+    def get_room(self, obj):
+        room = obj.room
+        serializer = RoomSerializer(room, many=False)
+        return serializer.data
 
+    def get_requestedBy(self, obj):
+        requestedBy = obj.requestedBy
+        serializer = StaffSerializer(requestedBy, many=False)
+        return serializer.data
+
+    def get_patient(self, obj):
+        patient = obj.patient
+        serializer = PatientSerializer(patient, many=False)
+        return serializer.data
 
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:

@@ -25,5 +25,5 @@ urlpatterns = [
     path('api/staff/',include('base.urls.staff_urls')),
     path('api/patients/',include('base.urls.patient_urls')),
     # path('api/surgeries/',include('base.urls.surgery_urls')),
-    # path('api/rooms/',include('base.urls.room_urls')),
+    path('api/rooms/',include('base.urls.room_urls')),
 ]
