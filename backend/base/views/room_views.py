@@ -20,37 +20,76 @@ def getRooms(request):
         )
         
         serializer = RoomSerializer(room, many=False)
-        return Response(serializer.data)   
+        return Response({
+                'message':'Successfully created room',
+                'code': 0,
+                'data':serializer.data
+                })   
     
     rooms = Room.objects.all()
     serializer = RoomSerializer(rooms, many=True)
-    return Response(serializer.data)  
+    return Response({
+        'message':'Successfully returned rooms',
+        'code': 0,
+        'data':serializer.data
+        })  
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def getRoom(request, pk):
-    room = Room.objects.get(id=pk)
+    try:
+        room = Room.objects.get(id=pk)
 
-    if request.method == 'PUT':
-        data = request.data
-        room.roomName=data['roomName']
-        room.save()
+        if request.method == 'PUT':
+            data = request.data
+            room.roomName=data['roomName']
+            room.save()
 
-    if request.method == 'DELETE':
-        room.delete()
-        return Response('Room deleted')
+            serializer = RoomSerializer(room, many=False)
+            return Response({
+                'message':'Successfully updated room',
+                'code' : 0,
+                'data' : serializer.data
+                })
 
-    serializer = RoomSerializer(room, many=False)
-    return Response(serializer.data)
-    
+        if request.method == 'DELETE':
+            room.delete()
+            return Response({
+                    'message':'Room deleted',
+                    'code' : 0
+                    })
+
+        serializer = RoomSerializer(room, many=False)
+        return Response({
+                'message':'Successfully returned room',
+                'code' : 0,
+                'data' : serializer.data
+            })
+
+    except:
+        return Response({
+            'message':'Room does not exist',
+            'code' : 1
+        })
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getSurgeries(request, pk):
-    room = Room.objects.get(id=pk)
-    surgeries = room.surgery_set.all()
+    try:
+        room = Room.objects.get(id=pk)
+        surgeries = room.surgery_set.all()
 
-    serializer = SurgerySerializer(surgeries, many=True)
-    return Response(serializer.data)
+        serializer = SurgerySerializer(surgeries, many=True)
+        return Response({
+            'message': 'Successfully returned surgeries',
+            'code': 0,
+            'data':serializer.data
+            })
+
+    except:
+        return Response({
+            'message':'Room does not exist',
+            'code' : 1
+        })

@@ -23,33 +23,62 @@ def getPatients(request):
         )
 
         serializer = PatientSerializer(patient, many=False)
-        return Response(serializer.data) 
+        return Response({
+            'message':'Successfully created patient',
+            'code':0,
+            'data':serializer.data
+            }) 
     
     else:
         patients = Patient.objects.all()
 
         serializer = PatientSerializer(patients, many=True)
-        return Response(serializer.data)
+        return Response({
+            'message':'Successfully returned patients',
+            'code':0,
+            'data':serializer.data
+            })
 
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def getPatient(request, pk):
-    patient = Patient.objects.get(id=pk)
+    try:
+        patient = Patient.objects.get(id=pk)
 
-    if request.method == 'PUT':
-        data = request.data
-        patient.firstName=data['firstName']
-        patient.lastName=data['lastName']
-        patient.email=data['email']
-        patient.dob=data['dob']
-        patient.contactNumber=data['contactNumber']
-        patient.save()
-    
-    if request.method == 'DELETE':
-        patient.delete()
-        return Response('Patient deleted')
+        if request.method == 'PUT':
+            data = request.data
+            patient.firstName=data['firstName']
+            patient.lastName=data['lastName']
+            patient.email=data['email']
+            patient.dob=data['dob']
+            patient.contactNumber=data['contactNumber']
+            patient.save()
 
-    serializer = PatientSerializer(patient, many=False)
-    return Response(serializer.data) 
+            serializer = PatientSerializer(patient, many=False)
+            return Response({
+                'message':'Successfully updated patient',
+                'code' : 0,
+                'user' : serializer.data
+                })
+        
+        if request.method == 'DELETE':
+            patient.delete()
+            return Response({
+                'message':'Patient deleted',
+                'code' : 0
+                })
+
+        serializer = PatientSerializer(patient, many=False)
+        return Response({
+            'message':'Successfully returned patient',
+            'code' : 0,
+            'data' : serializer.data
+            }) 
+
+    except:
+        return Response({
+            'message':'Patient does not exist',
+            'code' : 1
+        })

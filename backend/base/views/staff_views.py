@@ -22,30 +22,55 @@ def createStaff(request):
     )
 
     serializer = StaffSerializer(staff, many=False)
-    return Response(serializer.data)   
+    return Response({
+        'message':'Successfully created staff member',
+        'code' : 0,
+        'user' : serializer.data
+    })   
 
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def getStaff(request, pk):
-    staff = Staff.objects.get(id=pk)
+    try:
+        staff = Staff.objects.get(id=pk)
 
-    if request.method == 'PUT':
-        data = request.data
-        staff.firstName=data['firstName']
-        staff.lastName=data['lastName']
-        staff.email=data['email']
-        staff.phone=data['phone']
-        staff.staffType=data['staffType']
-        staff.save()
+        if request.method == 'PUT':
+            data = request.data
+            staff.firstName=data['firstName']
+            staff.lastName=data['lastName']
+            staff.email=data['email']
+            staff.phone=data['phone']
+            staff.staffType=data['staffType']
+            staff.save()
 
-    if request.method == 'DELETE':
-        staff.delete()
-        return Response('Staff deleted')
+            serializer = StaffSerializer(staff, many=False)
+            return Response({
+                'message':'Successfully updated staff member',
+                'code' : 0,
+                'user' : serializer.data
+                })
 
-    serializer = StaffSerializer(staff, many=False)
-    return Response(serializer.data)
+        if request.method == 'DELETE':
+            staff.delete()
+            return Response({
+                'message':'Staff deleted',
+                'code' : 0
+                })
+
+        serializer = StaffSerializer(staff, many=False)
+        return Response({
+            'message':'Successfully returned staff member',
+            'code' : 0,
+            'user' : serializer.data
+        })
+
+    except:
+        return Response({
+            'message':'Staff member does not exist',
+            'code' : 1
+        })
 
 
 
@@ -55,4 +80,8 @@ def getDoctors(request):
     doctors = Staff.objects.filter(staffType='Doctor')
 
     serializer = StaffSerializer(doctors, many=True)
-    return Response(serializer.data)   
+    return Response({
+        'message':'Successfully returned doctors',
+        'code':0,
+        'data':serializer.data
+        })   
