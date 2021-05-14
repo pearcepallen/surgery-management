@@ -12,38 +12,44 @@ from rest_framework import status
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def getSurgeries(request):
-    
+    user = request.user
     if request.method == 'POST':
         try:
-            data = request.data
-            requestedBy = Staff.objects.get(id=data['requestedBy'])
-            room = Room.objects.get(id=data['room'])
-            patient = Patient.objects.get(id=data['patient'])
+            if not user.groups.filter(name='receptionist'):
+                data = request.data
+                requestedBy = Staff.objects.get(id=data['requestedBy'])
+                room = Room.objects.get(id=data['room'])
+                patient = Patient.objects.get(id=data['patient'])
 
-            docs = data['doctors'].split()
+                docs = data['doctors'].split()
 
 
-            surgery = Surgery.objects.create(
-                requestedBy = requestedBy,
-                room = room,
-                patient = patient,
-                startDate = data['startDate'],
-                endDate = data['endDate'],
-            )
+                surgery = Surgery.objects.create(
+                    requestedBy = requestedBy,
+                    room = room,
+                    patient = patient,
+                    startDate = data['startDate'],
+                    endDate = data['endDate'],
+                )
 
-            for doc in docs:
-                surgery.doctors.add(Staff.objects.get(id=doc))
-            
-            serializer = SurgerySerializer(surgery, many=False)
-            return Response({
-                'message':'Successfully created surgery',
-                'code': 0,
-                'data':serializer.data
-                }) 
+                for doc in docs:
+                    surgery.doctors.add(Staff.objects.get(id=doc))
+                
+                serializer = SurgerySerializer(surgery, many=False)
+                return Response({
+                    'message':'Successfully created surgery',
+                    'code': 0,
+                    'data':serializer.data
+                    }) 
+            else:
+                return Response({
+                    'message':'Not allowed to create surgery',
+                    'code' : 1,
+                    })
 
         except:
             return Response({
-            'message':'Patient is already scheduled for surgery',
+            'message':'Patient is already scheduled for surgery | Doctor(s) does not exist',
             'code': 1,
             })
 
@@ -64,36 +70,48 @@ def getSurgeries(request):
 def getSurgery(request, pk):
     try:
         surgery = Surgery.objects.get(id=pk)
-
+        user = request.user
 
         if request.method == 'PUT':
-            data = request.data
-            surgery.requestedBy = Staff.objects.get(id=data['requestedBy'])
-            surgery.room = Room.objects.get(id=data['room'])
-            surgery.patient = Patient.objects.get(id=data['patient'])
-            surgery.startDate = data['startDate']
-            surgery.endDate = data['endDate']
+            if not user.groups.filter(name='receptionist'):
+                data = request.data
+                surgery.requestedBy = Staff.objects.get(id=data['requestedBy'])
+                surgery.room = Room.objects.get(id=data['room'])
+                surgery.patient = Patient.objects.get(id=data['patient'])
+                surgery.startDate = data['startDate']
+                surgery.endDate = data['endDate']
 
-            docs = data['doctors'].split()
-            surgery.doctors.clear()
+                docs = data['doctors'].split()
+                surgery.doctors.clear()
 
-            for doc in docs:
-                surgery.doctors.add(Staff.objects.get(id=doc))
-            surgery.save()
+                for doc in docs:
+                    surgery.doctors.add(Staff.objects.get(id=doc))
+                surgery.save()
 
-            serializer = SurgerySerializer(surgery, many=False)
-            return Response({
-                'message':'Successfully updated surgery',
-                'code' : 0,
-                'data' : serializer.data
-                })
+                serializer = SurgerySerializer(surgery, many=False)
+                return Response({
+                    'message':'Successfully updated surgery',
+                    'code' : 0,
+                    'data' : serializer.data
+                    })
+            else:
+                return Response({
+                    'message':'Not allowed to update surgery',
+                    'code' : 1,
+                    })
 
         if request.method == 'DELETE':
-            surgery.delete()
-            return Response({
-                'message':'Surgery deleted',
-                'code' : 0
-                })
+            if not user.groups.filter(name='receptionist'):
+                surgery.delete()
+                return Response({
+                    'message':'Surgery deleted',
+                    'code' : 0
+                    })
+            else:
+                return Response({
+                    'message':'Not allowed to delete surgery',
+                    'code' : 1,
+                    })
 
         serializer = SurgerySerializer(surgery, many=False)
         return Response({
@@ -101,10 +119,10 @@ def getSurgery(request, pk):
             'code' : 0,
             'data' : serializer.data
         }) 
-    
+
     except:
         return Response({
-            'message':'Surgery does not exist',
+            'message':'Surgery does not exist | Patient is already scheduled',
             'code' : 1
         })
 
