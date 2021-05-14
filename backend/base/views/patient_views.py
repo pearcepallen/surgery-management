@@ -13,22 +13,28 @@ from rest_framework import status
 @permission_classes([IsAuthenticated])
 def getPatients(request):
     if request.method == 'POST':
-        data = request.data
-        patient = Patient.objects.create(
-            firstName= data['firstName'],
-            lastName=data['lastName'],
-            email=data['email'],
-            dob=data['dob'],
-            contactNumber=data['contactNumber']
-        )
+        user = request.user
+        if not user.groups.filter(name='doctor'): 
+            data = request.data
+            patient = Patient.objects.create(
+                firstName= data['firstName'],
+                lastName=data['lastName'],
+                email=data['email'],
+                dob=data['dob'],
+                contactNumber=data['contactNumber']
+            )
 
-        serializer = PatientSerializer(patient, many=False)
-        return Response({
-            'message':'Successfully created patient',
-            'code':0,
-            'data':serializer.data
-            }) 
-    
+            serializer = PatientSerializer(patient, many=False)
+            return Response({
+                'message':'Successfully created patient',
+                'code':0,
+                'data':serializer.data
+                })
+        else:
+            return Response({
+                    'message':'Not allowed to create patient',
+                    'code' : 1,
+                    })
     else:
         patients = Patient.objects.all()
 
@@ -46,29 +52,42 @@ def getPatients(request):
 def getPatient(request, pk):
     try:
         patient = Patient.objects.get(id=pk)
-
+        user = request.user
+        
         if request.method == 'PUT':
-            data = request.data
-            patient.firstName=data['firstName']
-            patient.lastName=data['lastName']
-            patient.email=data['email']
-            patient.dob=data['dob']
-            patient.contactNumber=data['contactNumber']
-            patient.save()
+            if not user.groups.filter(name='doctor'):
+                data = request.data
+                patient.firstName=data['firstName']
+                patient.lastName=data['lastName']
+                patient.email=data['email']
+                patient.dob=data['dob']
+                patient.contactNumber=data['contactNumber']
+                patient.save()
 
-            serializer = PatientSerializer(patient, many=False)
-            return Response({
-                'message':'Successfully updated patient',
-                'code' : 0,
-                'user' : serializer.data
-                })
+                serializer = PatientSerializer(patient, many=False)
+                return Response({
+                    'message':'Successfully updated patient',
+                    'code' : 0,
+                    'user' : serializer.data
+                    })
+            else:
+                return Response({
+                    'message':'Not allowed to update patient',
+                    'code' : 1,
+                    })
         
         if request.method == 'DELETE':
-            patient.delete()
-            return Response({
-                'message':'Patient deleted',
-                'code' : 0
-                })
+            if not user.groups.filter(name='doctor'):
+                patient.delete()
+                return Response({
+                    'message':'Patient deleted',
+                    'code' : 0
+                    })
+            else:
+                return Response({
+                    'message':'Not allowed to delete patient',
+                    'code' : 1,
+                    })
 
         serializer = PatientSerializer(patient, many=False)
         return Response({
