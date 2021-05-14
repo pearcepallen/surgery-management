@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from base.models import *
 from base.serializers import *
+from base.decorators import allowed_users
 
 from django.contrib.auth.hashers import make_password
 
@@ -15,6 +16,7 @@ from rest_framework import status
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['admin'])
 def createStaff(request):
     data = request.data
     try:
@@ -50,38 +52,50 @@ def createStaff(request):
             'code' : 1
         })
 
-       
-
-
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def getStaff(request, pk):
     try:
         staff = Staff.objects.get(id=pk)
-
+        user = request.user
         if request.method == 'PUT':
-            data = request.data
-            staff.firstName=data['firstName']
-            staff.lastName=data['lastName']
-            staff.email=data['email']
-            staff.phone=data['phone']
-            staff.staffType=data['staffType']
-            staff.save()
+            currStaff = Staff.objects.get(email=user.username)
+            print(currStaff.id)
+            if currStaff.id == int(pk) or user.groups.filter(name='admin'): 
+                data = request.data
+                staff.firstName=data['firstName']
+                staff.lastName=data['lastName']
+                staff.email=data['email']
+                staff.phone=data['phone']
+                staff.staffType=data['staffType']
+                staff.save()
+                serializer = StaffSerializer(staff, many=False)
+                return Response({
+                    'message':'Successfully updated staff member',
+                    'code' : 0,
+                    'user' : serializer.data
+                    })
+            else:
+                return Response({
+                    'message':'Not allowed to update staff member',
+                    'code' : 1,
+                    })
 
-            serializer = StaffSerializer(staff, many=False)
-            return Response({
-                'message':'Successfully updated staff member',
-                'code' : 0,
-                'user' : serializer.data
-                })
+
 
         if request.method == 'DELETE':
-            staff.delete()
-            return Response({
-                'message':'Staff deleted',
-                'code' : 0
-                })
+            if user.groups.filter(name='admin'):
+                staff.delete()
+                return Response({
+                    'message':'Staff deleted',
+                    'code' : 0
+                    })
+            else:
+                return Response({
+                    'message':'Only admins are allowed to delete staff member',
+                    'code' : 1,
+                    })
 
         serializer = StaffSerializer(staff, many=False)
         return Response({
