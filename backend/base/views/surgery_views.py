@@ -23,7 +23,6 @@ def getSurgeries(request):
 
                 docs = data['doctors'].split()
 
-
                 surgery = Surgery.objects.create(
                     requestedBy = requestedBy,
                     room = room,
@@ -31,7 +30,6 @@ def getSurgeries(request):
                     startDate = data['startDate'],
                     endDate = data['endDate'],
                 )
-
                 for doc in docs:
                     surgery.doctors.add(Staff.objects.get(id=doc))
                 
@@ -46,15 +44,32 @@ def getSurgeries(request):
                     'message':'Not allowed to create surgery',
                     'code' : 1,
                     })
-
         except:
             return Response({
             'message':'Patient is already scheduled for surgery | Doctor(s) does not exist',
             'code': 1,
             })
 
-
-    surgeries = Surgery.objects.all()
+    doctor = request.GET.get('doctor', '')
+    patient = request.GET.get('patient', '')
+    room = request.GET.get('room', '')
+    
+    if doctor and not patient and not room:
+        surgeries = Surgery.objects.filter(requestedBy__id=int(doctor))
+    elif patient and not doctor and not room:
+        surgeries = Surgery.objects.filter(patient__id=int(patient))
+    elif room and not doctor and not patient:
+        surgeries = Surgery.objects.filter(room__id=int(room))
+    elif doctor and patient and not room:
+        surgeries = Surgery.objects.filter(requestedBy__id=int(doctor), patient__id=int(patient))
+    elif doctor and room and not patient:
+        surgeries = Surgery.objects.filter(requestedBy__id=int(doctor), room__id=int(room))
+    elif room and patient and not doctor:
+        surgeries = Surgery.objects.filter(room__id=int(room), patient__id=int(patient))
+    elif doctor and patient and room:
+        surgeries = Surgery.objects.filter(requestedBy__id=int(doctor), room__id=int(room), patient__id=int(patient))
+    else:
+        surgeries = Surgery.objects.all()
     
     serializer = SurgerySerializer(surgeries, many=True)
     return Response({
