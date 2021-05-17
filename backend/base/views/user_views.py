@@ -66,21 +66,20 @@ def registerUser(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request):
-# try:
-    refresh_token = request.data["refresh_token"]
-    token = RefreshToken(refresh_token)
-    token.blacklist()
+    try:
+        refresh_token = request.data["refresh_token"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
 
-    # return Response(status=status.HTTP_205_RESET_CONTENT)
-    return Response({
-    'message':'User logged out successfully',
-    'code' : 0
-    })
-# except:
-#     return Response({
-#     'message':'Bad request',
-#     'code' : 1
-#     })
+        return Response({
+        'message':'User logged out successfully',
+        'code' : 0
+        })
+    except:
+        return Response({
+        'message':'Bad request',
+        'code' : 1
+        })
 
     
 @api_view(['POST'])
