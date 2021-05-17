@@ -6,7 +6,7 @@ class Staff(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     firstName = models.CharField(max_length=200, null=True, blank=True)
     lastName = models.CharField(max_length=200, null=True, blank=True)
-    email = models.CharField(max_length=200, null=True, blank=True)
+    email = models.CharField(max_length=200, null=False, blank=False)
     phone = models.CharField(max_length=200, null=True, blank=True)
     staffType = models.CharField(max_length=200, null=True, blank=True)
     authCode = models.CharField(max_length=200, null=True, blank=True)
@@ -38,7 +38,7 @@ class Surgery(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     requestedBy = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='requested')
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True)
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE) #Contemplate making it protected for record purpose
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE) 
     startDate = models.DateField()
     endDate = models.DateField()
     doctors = models.ManyToManyField(Staff, blank=True)
