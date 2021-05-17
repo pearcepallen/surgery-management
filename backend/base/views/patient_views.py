@@ -95,7 +95,6 @@ def getPatient(request, pk):
             'code' : 0,
             'data' : serializer.data
             }) 
-
     except:
         return Response({
             'message':'Patient does not exist',

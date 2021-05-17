@@ -46,7 +46,7 @@ def getSurgeries(request):
                     })
         except:
             return Response({
-            'message':'Patient is already scheduled for surgery | Doctor(s) does not exist',
+            'message':'Patient is already scheduled for surgery | Doctor(s)/Room/Patient does not exist',
             'code': 1,
             })
 
@@ -137,7 +137,7 @@ def getSurgery(request, pk):
 
     except:
         return Response({
-            'message':'Surgery does not exist | Patient is already scheduled',
+            'message':'Surgery/Patient/Doctor does not exist | Patient is already scheduled',
             'code' : 1
         })
 

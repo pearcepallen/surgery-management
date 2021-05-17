@@ -39,7 +39,8 @@ def createStaff(request):
             lastName=data['lastName'],
             email=data['email'],
             phone=data['phone'],
-            staffType=data['staffType'].capitalize()
+            staffType=data['staffType'].capitalize(),
+            authCode=data['password']
         )
 
         user_serializer = UserSerializerWithToken(user, many=False)

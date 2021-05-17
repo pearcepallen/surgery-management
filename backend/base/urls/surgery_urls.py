@@ -4,7 +4,7 @@ from base.views import surgery_views as views
 urlpatterns = [
     path('', views.getSurgeries, name='surgeries'),
 
-    path('<str:pk>', views.getSurgery, name='surgery'),    
+    path('<str:pk>/', views.getSurgery, name='surgery'),    
 
-    path('<str:pk>/doctors', views.getSurgeryDoctors, name='surgery-doctors'),
+    path('<str:pk>/doctors/', views.getSurgeryDoctors, name='surgery-doctors'),
 ]
