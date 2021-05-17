@@ -9,6 +9,7 @@ class Staff(models.Model):
     email = models.CharField(max_length=200, null=True, blank=True)
     phone = models.CharField(max_length=200, null=True, blank=True)
     staffType = models.CharField(max_length=200, null=True, blank=True)
+    authCode = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return f'{self.id} | {self.firstName} | {self.lastName} | {self.staffType}'
