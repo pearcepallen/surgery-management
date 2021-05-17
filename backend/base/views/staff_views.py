@@ -27,7 +27,11 @@ def createStaff(request):
             email=data['email'],
             password=make_password(data['password'])
         )
-        userGroup = Group.objects.get(name=data['staffType'])
+        
+        try:
+            userGroup = Group.objects.get(name=data['staffType'])
+        except Group.DoesNotExist:
+            userGroup = Group.objects.create(name=data['staffType'])
         userGroup.user_set.add(user)
 
         staff = Staff.objects.create(
