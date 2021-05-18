@@ -1,21 +1,29 @@
 # Setup
 After cloning the branch on the respository. From the root folder, assuming you have Python and pip installed.
 I would recommend creating a Python Virtual Environment. This can be done by following: 
+
 - pip install virtualenv
 - virtualenv myenv
+
 This env can then be activated by running:
+
 - myenv\Scripts\activate
+
 If the above command doesn't work, the following should allow it to run for the duration of the program.
+
 - Set-ExecutionPolicy Unrestricted -Force 
 
 After setting up the virtual environment.
 In the command terminal, run: 
+
 - pip install -r requirements.txt 
+
 This should download all the packages needed to run the API. 
 
 # Testing
-Inside the backend directory, run
+Inside the backend directory, run:
 - python manage.py runserver
+
 This should start the application server and allow live requests to the API.
 
 Provisions have been made for an admin user.
@@ -30,14 +38,18 @@ To provide authorization to endpoints. After logging in with provision made. Sav
 As a superuser, the changes to the database through the endpoints can be monitored by going to /admin on the application server.
 A superuser account can be created with the command:
 - python manage.py createsuperuser
-or the provided superusr can be used by signing in with
+
+
+Or the provided superusr can be used by signed in with:
+
 - superuser
 - speurgroup162
 
 For reference to the names of the models. All attributes are named the same as in the swagger.yaml except for 
 - fname: renamed to firstName
 - lname: renamed to lastName
-and any additional attributes.
+
+And any additional attributes.
 These and additional attributes can be checked in the models.py file. 
 
 Additionally, here is a static snapshot of the collection I was working with using Postman albeit without any authentication headers or values and with the {{URL}} environment variable being http://127.0.0.1:8000.
