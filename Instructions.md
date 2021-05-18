@@ -41,7 +41,7 @@ and any additional attributes.
 These and additional attributes can be checked in the models.py file. 
 
 Additionally, here is a static snapshot of the collection I was working with using Postman albeit without any authentication headers or values and with the {{URL}} environment variable being http://127.0.0.1:8000.
-https://www.getpostman.com/collections/7627c08d075e431b5e7e
+https://www.getpostman.com/collections/90e9f08d636fb79ec74c
 
 
 # Additional Information
